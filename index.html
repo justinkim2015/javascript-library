@@ -13,7 +13,7 @@
   <ul class="booklist">
   </ul>
 
-  <button id="show-form"">Add book</button>
+  <button id="show-form">Add book</button>
 
   <form id="bookform" class='hidden' action="">
     <label for="title">Title:</label>
@@ -26,10 +26,7 @@
     <input type="text" id="pages" name="pages">
 
     <label for="read">Read?</label>
-    <select name="read" id="read">
-      <option value="read">Finished</option>
-      <option value="not read">Not yet!</option>
-    </select>
+    <input type="checkbox" id="read" name="read">
 
     <input type="submit" id='book-submit'>
   </form>

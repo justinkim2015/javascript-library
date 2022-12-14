@@ -8,16 +8,35 @@ function Book(title, author, pages, read) {
   this.author = author
   this.pages = pages
 
-  if(read == 'read') {
-    this.read = 'finished reading'
+  if(read == true ) {
+    this.read = 'finished reading '
   } else {
-    this.read = 'not read yet'
+    this.read = 'not read yet '
   };
-
-  this.info = () => {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`
-  }
 };
+
+Book.prototype.info = function() {
+  return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`
+}
+
+Book.prototype.delete = function(index) {
+  myLibrary.splice(index, 1)
+  document.querySelector(`.li${index}`).remove();
+}
+
+Book.prototype.readToggle = function(index) {
+  let element = document.querySelector(`.li${index}`).firstChild
+  let text = element.textContent
+  let position = text.search('finished reading')
+
+  if(position != -1) {
+    text = text.replace('finished reading', 'not read yet')
+  } else {
+    text = text.replace('not read yet', 'finished reading')
+  } 
+  
+  element.textContent = text
+}
 
 // FORM
 function showForm() {
@@ -29,14 +48,14 @@ function submitClick(event) {
   title = document.getElementById('title').value
   author = document.getElementById('author').value
   pages = document.getElementById('pages').value
-  read = document.getElementById('read').value
+  read = document.getElementById('read').checked
 
   addBookToLibrary(title, author, pages, read)
   event.preventDefault();
 } 
 
 // EVENT LISTENERS FORMS
-show = document.querySelector('#show-form')
+const show = document.querySelector('#show-form')
 show.addEventListener('click', showForm)
 
 const submit = document.querySelector('#book-submit')
@@ -51,25 +70,7 @@ function addBookToLibrary(title, author, pages, read) {
 
 function makelist() {
   myLibrary.forEach((element, index) => {
-    newListItem = document.createElement('li')
-    newListItem.classList.add(`li${index}`)
-    newListItem.textContent = element.info();
-    document.querySelector('ul').appendChild(newListItem)
-
-    newButton = document.createElement('button')
-    newButton.textContent = 'delete'
-    newButton.classList.add(`deletebutton${index}`)
-    document.querySelector(`.li${index}`).appendChild(newButton)
-
-    const delBook = document.querySelector(`.deletebutton${index}`)
-    delBook.addEventListener('click', deleteBook.bind(this, index))
-
-    // newButton = document.createElement('button')
-    // newButton.textContent = 'read'
-    // newButton.classList.add('read')
-    // document.querySelector('ul').appendChild(newButton)
-    // const markRead = document.querySelector('.read')
-    // markRead.addEventListener('click', readBook)
+    createLi(element, index)
   })  
 }
 
@@ -83,9 +84,34 @@ function update(parent) {
   makelist()
 }
 
-function deleteBook(index) {
-  console.log(index)
-  myLibrary.splice(index, 1)
-  document.querySelector(`.li${index}`).remove();
+function createLi(element, index) {
+  newListItem = document.createElement('li')
+  newListItem.classList.add(`li${index}`)
+  newP = document.createElement('p')
+  newP.textContent = element.info()
+  newListItem.appendChild(newP)
+  document.querySelector('ul').appendChild(newListItem)
+
+  delButton(element, index)
+  readButton(element, index)
 }
 
+function delButton(element, index) {
+  newButton = document.createElement('button')
+  newButton.textContent = 'delete'
+  newButton.classList.add(`deletebutton${index}`)
+  document.querySelector(`.li${index}`).appendChild(newButton)
+
+  const delBook = document.querySelector(`.deletebutton${index}`)
+  delBook.addEventListener('click', element.delete.bind(this, index))
+}
+
+function readButton(element, index) {
+  newButton = document.createElement('button')
+  newButton.textContent = 'read?'
+  newButton.classList.add(`readbutton${index}`)
+  document.querySelector(`.li${index}`).appendChild(newButton)
+
+  const readBook = document.querySelector(`.readbutton${index}`)
+  readBook.addEventListener('click', element.readToggle.bind(this, index))
+}
