@@ -7,16 +7,21 @@ function Book(title, author, pages, read) {
   this.title = title
   this.author = author
   this.pages = pages
-
-  if(read == true ) {
-    this.read = 'finished reading '
-  } else {
-    this.read = 'not read yet '
-  };
+  this.read = read
 };
 
+Book.prototype.finOrNot = function(read) {
+  if(read == true ) {
+    return 'finished reading '
+  } else {
+    return 'not read yet '
+  };
+}
+
 Book.prototype.info = function() {
-  return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`
+  let read = this.finOrNot(this.read)
+
+  return `${this.title} by ${this.author}, ${this.pages} pages, ${read}`
 }
 
 Book.prototype.delete = function(index) {
@@ -24,18 +29,16 @@ Book.prototype.delete = function(index) {
   document.querySelector(`.li${index}`).remove();
 }
 
-Book.prototype.readToggle = function(index) {
-  let element = document.querySelector(`.li${index}`).firstChild
-  let text = element.textContent
-  let position = text.search('finished reading')
+Book.prototype.readToggle = function(element, index) {
+  let node = document.querySelector(`.li${index}`).firstChild
 
-  if(position != -1) {
-    text = text.replace('finished reading', 'not read yet')
+  if(element.read == true) {
+    element.read = false
   } else {
-    text = text.replace('not read yet', 'finished reading')
-  } 
-  
-  element.textContent = text
+    element.read = true
+  }
+
+  node.textContent = element.info()
 }
 
 // FORM
@@ -113,5 +116,5 @@ function readButton(element, index) {
   document.querySelector(`.li${index}`).appendChild(newButton)
 
   const readBook = document.querySelector(`.readbutton${index}`)
-  readBook.addEventListener('click', element.readToggle.bind(this, index))
+  readBook.addEventListener('click', element.readToggle.bind(this, element, index))
 }
