@@ -1,3 +1,46 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+button {
+  border: 1px solid rgb(180, 180, 180);
+  background-color: rgb(220, 220, 220);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 15px;
+}
+
+ul {
+  list-style: none;
+}
+
 .hidden {
   visibility: hidden;
 }
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 5px;
+  margin: 3rem 40rem 0rem 40rem;
+  padding: 5rem;
+  background-color: rgb(220, 220, 220);
+  box-shadow: inset;
+}
+
+.booklist {
+  overflow: scroll;
+  text-align: center;
+  height: 30vh;
+  width: 40vw;
+  background-color: rgb(220, 220, 220);
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 5px; 
+}
+
